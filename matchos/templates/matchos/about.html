@@ -1,0 +1,16 @@
+{% extends 'matchos/base.html' %}
+
+{% block content %}
+    <p>Data feed sources:</p>
+    <ul>
+        <li>Football: <a href="http://api.football-data.org/index">http://api.football-data.org/index</a></li>
+        <li>Dota2: <a href="http://www.joindota.com/en/matches">http://www.joindota.com/en/matches</a></li>
+    </ul>
+    <p>Technologies used:</p>
+    <ul>
+        <li>Django 1.9</li>
+        <li>PostgreSQL 9.4.5</li>
+        <li>Bootstrap 3.3.6</li>
+        <li><a href="http://lxml.de/">LXML</a> for webscraping joindota.com</li>
+    </ul>
+{% endblock content %}

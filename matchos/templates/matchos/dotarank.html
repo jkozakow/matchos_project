@@ -1,0 +1,24 @@
+{% extends 'matchos/base.html' %}
+
+{% block content %}
+    {% if team_rank %}
+    <table>
+        <tr>
+            <th>Team name</th>
+            <th>Wins </th>
+            <th>Losses </th>
+            <th>Draws</th>
+        </tr>
+        {% for team in team_rank%}
+            <tr>
+                <th><a href="/matchos/dota2/team/{{ team.id }}/">{{ team.name }} </a></th>
+                <th>{{ team.wins }} </th>
+                <th>{{ team.loss }} </th>
+                <th>{{ team.draw }}</th>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>Nope.</p>
+    {% endif %}
+{% endblock content %}

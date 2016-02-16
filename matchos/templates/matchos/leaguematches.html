@@ -1,0 +1,40 @@
+{% extends 'matchos/base.html' %}
+
+{% block content %}
+    {% if matches %}
+    <table>
+            <tr>
+                <th>Home Team</th>
+                <th> </th>
+                <th> </th>
+                <th>Away Team</th>
+                <th>Date</th>
+                <th>Season ID</th>
+            </tr>
+        {% for match in matches%}
+            <tr>
+                <th><a href="/matchos/football/team/{{ match.hometeamid }}/">{{ match.hometeamname }}</a> </th>
+                <th>{% if match.goalshometeam == None %}
+                    :
+                    {% else %}
+                    {{ match.goalshometeam }}
+                    {% endif %}
+                </th>
+                <th>{% if match.goalsawayteam == None %}
+                    :
+                    {% else %}
+                    {{ match.goalsawayteam }}
+                    {% endif %}
+                </th>
+                <th><a href="/matchos/football/team/{{ match.awayteamid }}/">{{ match.awayteamname }}</a> </th>
+
+                <th>{{ match.date|slice:":10" }}</th>
+                <th class="seasonid"><a href="/matchos/football/season/{{ match.season_id }}/">{{ match.season_id }}</a></th>
+
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>Nope.</p>
+    {% endif %}
+{% endblock content %}

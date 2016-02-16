@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'matchos/style.css' %}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Matchos</title>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/matchos">Matchos</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li><a href="/matchos/football">Football</a></li>
+          <li><a href="/matchos/dota2">Dota 2</a></li>
+          <li><a href="/matchos/about">About</a></li>
+        </ul>
+      </div>
+    </nav>
+
+        <div class="jumbotron">
+            <h1>Welcome to Matchos</h1>
+            <p>Bringing you some sports/e-sports data feed</p>
+        </div>
+
+        {% block content %}
+        {% endblock %}
+        <footer>
+            <p class="site-info">© 2016 JK</p>
+        </footer>
+</div>
+
+</body>
+</html>

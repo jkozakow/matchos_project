@@ -1,0 +1,67 @@
+{% extends 'matchos/base.html' %}
+{% load matchos_extra %}
+{% block content %}
+
+    {% if found_entries %}
+    <table>
+            <tr>
+                <th>Home Team</th>
+                <th> </th>
+                <th> </th>
+                <th>Away Team</th>
+                <th>Date</th>
+                <th>Season ID</th>
+            </tr>
+        {% for match in found_entries%}
+            <tr>
+                <th><a href="/matchos/football/team/{{ match.hometeamid }}/">{{ match.hometeamname }}</a> </th>
+                <th>{% if match.goalshometeam == None %}
+                    :
+                    {% else %}
+                    {{ match.goalshometeam }}
+                    {% endif %}
+                </th>
+                <th>{% if match.goalsawayteam == None %}
+                    :
+                    {% else %}
+                    {{ match.goalsawayteam }}
+                    {% endif %}
+                </th>
+                <th><a href="/matchos/football/team/{{ match.awayteamid }}/">{{ match.awayteamname }}</a> </th>
+
+                <th>{{ match.date }}</th>
+                <th><a href="/matchos/football/season/{{ match.season_id }}/">{{ match.season_id }}</a></th>
+
+            </tr>
+        {% endfor %}
+    </table>
+    {% elif found_entries2 %}
+        <table>
+                <tr>
+                    <th>Team 1</th>
+                    <th>Team 2</th>
+                    <th>Winning team</th>
+                    <th>Date</th>
+                    <th>Match link</th>
+                </tr>
+            {% for match in found_entries2%}
+                <tr>
+                    <th><a href="/matchos/dota2/team/{{ x|pickname:match.team1 }}/">{{ match.team1 }}</a></th>
+                    <th><a href="/matchos/dota2/team/{{ y|pickname:match.team2 }}/">{{ match.team2 }}</a></th>
+                    <th>{% if match.winner == 1 %}
+                        {{ match.team1 }}
+                    {% elif match.winner == 2 %}
+                        {{ match.team2 }}
+                    {% else %}
+                        DRAW
+                    {% endif %}
+                    </th>
+                    <th>{{ match.date }}</th>
+                    <th><a href="/matchos/dota2/match/{{ match.id }}">Match link</a></th>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Nope.</p>
+    {% endif %}
+{% endblock content %}

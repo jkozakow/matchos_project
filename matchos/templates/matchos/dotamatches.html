@@ -1,0 +1,49 @@
+{% extends 'matchos/base.html' %}
+{% load matchos_extra %}
+{% block content %}
+
+    {% if matches %}
+        <table>
+                <tr>
+                    <th>Team 1</th>
+                    <th>Team 2</th>
+                    <th>Winning team</th>
+                    <th>Date</th>
+                    <th>Match link</th>
+                </tr>
+            {% for match in matches%}
+                <tr>
+                    <th><a href="/matchos/dota2/team/{{ x|pickname:match.team1 }}/">{{ match.team1 }}</a></th>
+                    <th><a href="/matchos/dota2/team/{{ y|pickname:match.team2 }}/">{{ match.team2 }}</a></th>
+                    <th>{% if match.winner == 1 %}
+                        {{ match.team1 }}
+                    {% elif match.winner == 2 %}
+                        {{ match.team2 }}
+                    {% else %}
+                        DRAW
+                    {% endif %}
+                    </th>
+                    <th>{{ match.date }}</th>
+                    <th><a href="/matchos/dota2/match/{{ match.id }}">Match link</a></th>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Nope.</p>
+    {% endif %}
+    <div class="pagination">
+        <span class="step-links" >
+            {% if matches.has_previous %}
+                <a href="?page={{ matches.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ matches.number }} of {{ matches.paginator.num_pages }}.
+            </span>
+
+            {% if matches.has_next %}
+                <a href="?page={{ matches.next_page_number }}">next</a>
+            {% endif %}
+    </span>
+    </div>
+{% endblock content %}

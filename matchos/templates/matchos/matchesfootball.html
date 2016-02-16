@@ -1,0 +1,20 @@
+{% extends 'matchos/base.html' %}
+{% load matchos_extra %}
+{% block content %}
+    {% if matches %}
+        <h3>Choose league.</h3>
+        {% for league in league_ids %}
+            {% if forloop.first %}<div class="row grid">{% endif %}
+                <div class="col-xs-4">
+                     <a href="/matchos/football/season/{{ league }}">
+                        <input type="button" value="{{ league_names|lookup:forloop.counter0 }}" class="btn btn-primary">
+                     </a>
+                </div>
+                {% if forloop.counter|divisibleby:3 %}</div><div class="row grid">{% endif %}
+            {% if forloop.last %}</div>{% endif %}
+
+        {% endfor %}
+    {% else %}
+        <p>Nope.</p>
+    {% endif %}
+{% endblock content %}

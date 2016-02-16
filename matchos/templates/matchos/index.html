@@ -1,0 +1,24 @@
+{% extends 'matchos/base.html' %}
+
+{% block content %}
+    <div class="centered">
+        <p class="centered">Choose sport.</p>
+        <br>
+    </div>
+    <div class="centered">
+        <a href="/matchos/football">
+            <input type="button" class="btn btn-primary btn-lg" value="Football"/>
+        </a>
+        <a href="/matchos/dota2">
+            <input type="button" class="btn btn-primary btn-lg" value="Dota2"/>
+        </a>
+    </div>
+    <div class="centered">
+        <br>
+        <p>Or search by team name:</p>
+        <form type="get" action="/matchos/search">
+            <input type="text" name="q"><br>
+            <button type="submit" class="search">Search</button>
+        </form>
+    </div>
+{% endblock content %}

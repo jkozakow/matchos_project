@@ -1,0 +1,58 @@
+{% extends 'matchos/base.html' %}
+{% load matchos_extra %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-4">
+            <table class="stats">
+                    <tr>
+                        <th class="teamname">Team name</th>
+                        <th>Wins </th>
+                        <th>Losses </th>
+                        <th>Draws</th>
+                    </tr>
+                    <tr>
+                        <th class="teamname">{{ team.name }} </th>
+                        <th>{{ team.wins }} </th>
+                        <th>{{ team.loss }} </th>
+                        <th>{{ team.draw }}</th>
+                    </tr>
+            </table>
+        </div>
+        <div class="col-md-8">
+            <table>
+                <tr>
+                    <th>Team 1</th>
+                    <th>Team 2</th>
+                    <th>Score </th>
+                    <th>Date</th>
+                    <th>Match link</th>
+                </tr>
+                {% for match in matches%}
+                    <tr>
+                        <th>
+                            <a href="/matchos/dota2/team/{{ x|pickname:match.team1 }}">
+                                {{ match.team1 }}
+                            </a>
+                        </th>
+                        <th><a href="/matchos/dota2/team/{{ y|pickname:match.team2 }}">
+                                {{ match.team2 }}
+                            </a>
+                        </th>
+                        <th>{% if match.team1 == team.name and match.winner == 1 %}
+                                WIN
+                            {% elif match.team2 == team.name and match.winner == 2 %}
+                                WIN
+                            {% elif match.winner == 0 %}
+                                DRAW
+                            {% else %}
+                                LOSE
+                            {% endif %}
+                        </th>
+                        <th>{{ match.date }}</th>
+                        <th><a href="/matchos/dota2/match/{{ match.id }}">Match link</a></th>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock content %}

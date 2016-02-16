@@ -1,0 +1,30 @@
+{% extends 'matchos/base.html' %}
+
+{% block content %}
+
+        {% if match %}
+    <table>
+            <tr>
+                <th>Team 1</th>
+                <th>Team 2</th>
+                <th>Winning team</th>
+                <th>Date</th>
+            </tr>
+            <tr>
+                <th><a href="/matchos/dota2/team/{{ team1_object.pk }}/">{{ match.team1 }}</a></th>
+                <th><a href="/matchos/dota2/team/{{ team2_object.pk }}/">{{ match.team2 }}</a></th>
+                <th>{% if match.winner == 1 %}
+                    {{ match.team1 }}
+                {% elif match.winner == 2 %}
+                    {{ match.team2 }}
+                {% else %}
+                    DRAW
+                {% endif %}
+                </th>
+                <th>{{ match.date }}</th>
+            </tr>
+    </table>
+    {% else %}
+        <p>Nope.</p>
+    {% endif %}
+{% endblock content %}
