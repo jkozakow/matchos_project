@@ -32,3 +32,15 @@ class TeamFootball(models.Model):
     wins = models.IntegerField()
     loss = models.IntegerField()
     draw = models.IntegerField()
+
+
+class Player(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=50)
+    team_id = models.IntegerField()
+    position = models.CharField(max_length=50, blank=True, null=True)
+    jersey_number = models.IntegerField( blank=True, null=True)
+    date_of_birth = models.CharField(max_length=50, blank=True, null=True)
+    nationality = models.CharField(max_length=50, blank=True, null=True)
+    contract_until = models.CharField(max_length=50, blank=True, null=True)
+    market_value = models.CharField(max_length=50, blank=True, null=True)

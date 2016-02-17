@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, render_to_response
 from django.http import HttpResponse
 from django.template import loader
-from .models import Team, Match, MatchFootball, TeamFootball
+from .models import Team, Match, MatchFootball, TeamFootball, Player
 from django.db.models import Q
 from django.template import RequestContext
 from matchos.search import get_query
@@ -95,10 +95,12 @@ def teamdetailfootball(request, team_id):
     team = TeamFootball.objects.get(teamid=team_id)
     team_name = TeamFootball.objects.filter(teamid=team_id).values('name')
     matches = MatchFootball.objects.filter(Q(hometeamname__in=team_name) | Q(awayteamname__in=team_name))
+    players = Player.objects.filter(team_id=team_id)
     template = loader.get_template('matchos/teamfootballdetail.html')
     context = {
         'matches': matches,
-        'team': team
+        'team': team,
+        'players': players,
     }
     return HttpResponse(template.render(context, request))
 

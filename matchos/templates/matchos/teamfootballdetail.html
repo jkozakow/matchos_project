@@ -18,6 +18,27 @@
             <th>{{ team.draw }}</th>
         </tr>
     </table>
+    {% if players %}
+        Players:
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Position </th>
+                <th>Nationality </th>
+                <th>Market value</th>
+            </tr>
+        {% for player in players%}
+            <tr>
+                <th>{{ player.name }} </th>
+                <th>{{ player.position }} </th>
+                <th>{{ player.nationality }} </th>
+                <th>{{ player.market_value }}</th>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        No players in database.
+    {% endif %}
     </div>
     <div class="col-md-8">
     <table>
