@@ -29,12 +29,6 @@ def getTeamPlayers(conn_api, team_id, conn):
     response = json.loads(conn_api.getresponse().read().decode())
     cur_p = conn.cursor()
     player_ids = []
-    '''
-    for i, player in enumerate(response['players']):
-        if response["players"][i]['id'] == 431:
-            print("JEST TUTAJ SKURWYSYN")
-            print(team_id, response["players"][i]['name'])
-    '''
     for i, player in enumerate(response['players']):
         player_id = response["players"][i]["id"]
         player_name = response["players"][i]["name"]
