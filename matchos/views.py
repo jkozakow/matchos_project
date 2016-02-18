@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, render_to_response
 from django.http import HttpResponse
 from django.template import loader
-from .models import Team, Match, MatchFootball, TeamFootball, Player
+from .models import Team, Match, MatchFootball, TeamFootball, Player, LeagueTable
 from django.db.models import Q
 from django.template import RequestContext
 from matchos.search import get_query
@@ -84,9 +84,11 @@ def football(request):
 
 def season(request, season_id):
     matches = MatchFootball.objects.filter(season_id=season_id)
+    table = LeagueTable.objects.filter(league_id=season_id)
     template = loader.get_template('matchos/leaguematches.html')
     context = {
-        'matches': matches
+        'matches': matches,
+        'table': table
     }
     return HttpResponse(template.render(context, request))
 

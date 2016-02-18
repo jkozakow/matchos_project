@@ -44,3 +44,16 @@ class Player(models.Model):
     nationality = models.CharField(max_length=50, blank=True, null=True)
     contract_until = models.CharField(max_length=50, blank=True, null=True)
     market_value = models.CharField(max_length=50, blank=True, null=True)
+
+
+class LeagueTable(models.Model):
+    league_id = models.IntegerField()
+    team_id = models.IntegerField()
+    team_name = models.CharField(max_length=50, blank=True, null=True)
+    rank = models.IntegerField()
+    played_games = models.IntegerField()
+    crest_uri = models.CharField(max_length=200)
+    points = models.IntegerField()
+    goals = models.IntegerField()
+    goals_against = models.IntegerField()
+    goal_difference = models.IntegerField()
