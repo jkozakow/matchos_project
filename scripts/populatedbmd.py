@@ -3,7 +3,7 @@ import json
 import psycopg2
 
 
-def addteam(conn):
+def addteamstats(conn):
     cur = conn.cursor()
     cur.execute("SELECT DISTINCT hometeamid FROM matchos_matchfootball UNION SELECT DISTINCT awayteamid FROM matchos_matchfootball;") #gather team names
 
@@ -15,7 +15,7 @@ def addteam(conn):
     del teams_list[-1]
     for team in teams_list:
         cur.execute("SELECT * from matchos_matchfootball WHERE hometeamid = (%s) or awayteamid = (%s);", (team, team)) #select team matches
-        #print("Matches of team: ", team)
+        print("Matches of team: ", team)
         win = 0
         loss = 0
         draw = 0
@@ -23,34 +23,34 @@ def addteam(conn):
             if record[2] == team[0]:  #id home team
                 team_id = record[2]
                 team_name = record[1]
-                #print("home team")
+                print("home team")
             else:
                 team_id = record[4]
                 team_name = record[3]
-                #print("away team")
+                print("away team")
             if record[5] is not None and record[6] is not None:
                 if record[2] == team_id and record[5] > record[6]:
-                    #print(record)
-                    #print("TEAM WON")
+                    print(record)
+                    print("TEAM WON")
                     win += 1
 
                 elif record[2] == team_id and record[5] < record[6]:
-                    #print(record)
-                    #print("TEAM LOST")
+                    print(record)
+                    print("TEAM LOST")
                     loss += 1
                 elif record[4] == team_id and record[6] > record[5]:
-                    #print(record)
-                    #print("TEAM WON")
+                    print(record)
+                    print("TEAM WON")
                     win += 1
                 elif record[4] == team_id and record[6] < record[5]:
-                    #print(record)
-                    #print("TEAM LOST")
+                    print(record)
+                    print("TEAM LOST")
                     loss += 1
                 else:
-                    #print(record)
-                    #print("DRAW")
+                    print(record)
+                    print("DRAW")
                     draw += 1
-        #print("WIN/LOSS/DRAW: ", win, loss, draw)
+        print("WIN/LOSS/DRAW: ", win, loss, draw)
         cur.execute('INSERT INTO matchos_teamfootball (name, wins, loss, draw, teamid) VALUES (%s, %s, %s, %s, %s)', (team_name, win, loss, draw, team_id))
     cur.close()
 
@@ -60,12 +60,12 @@ def mergeleagues(conn):
     for x, y in enumerate(league_names):
         cur2.execute('INSERT INTO matchos_matchfootball (hometeamname, hometeamid, awayteamname, awayteamid, goalshometeam, goalsawayteam, season_id, date) '
                 'SELECT hometeamname, hometeamid, awayteamname, awayteamid, goalshometeam, goalsawayteam, season_id, date from matches'+league_names[x])
-    cur.close()
+    cur2.close()
 
 
 def getLeagueIds(conn):
     conn.request('GET', '/v1/soccerseasons/', None, headers )
-    response = json.loads(connection.getresponse().read().decode())
+    response = json.loads(conn.getresponse().read().decode())
     leagues_id = []
     for i, league in enumerate(response):
         leagues_id.append(response[i]["id"])
@@ -91,16 +91,16 @@ def insertLeagueFixtures(cur, leagues_id, league_names, connection):
     cur.close()
 
 
-def insertdata(conn):
+def insertdata(conn_api, conn):
     cur3 = conn.cursor()
-    leagues_id = getLeagueIds(connection_api)
-    insertLeagueFixtures(cur3, leagues_id, league_names, connection_api)
+    leagues_id = getLeagueIds(conn_api)
+    insertLeagueFixtures(cur3, leagues_id, league_names, conn_api)
 
 
 def createtables(conn):
     cur4 = conn.cursor()
     for x, y in enumerate(league_names):
-        cur4.execute('create table matches'+league_names[x]+' (id serial PRIMARY KEY, HomeTeamName varchar, HomeTeamId integer, AwayTeamName varchar, AwayTeamId integer, GoalsHomeTeam integer, GoalsAwayTeam integer, date varchar );')
+        cur4.execute('create table matches'+league_names[x]+' (id serial PRIMARY KEY, HomeTeamName varchar, HomeTeamId integer, AwayTeamName varchar, AwayTeamId integer, GoalsHomeTeam integer, GoalsAwayTeam integer, season_id integer, date varchar );')
     cur4.close()
 
 
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     headers = {'X-Auth-Token': 'b770d6e9d7a0437d85642297ff3afd37', 'X-Response-Control': 'minified'}
 
     try:
-        connection = psycopg2.connect("dbname=mydb user=dbuser password=dbpassword host=localhost")
+        connection = psycopg2.connect("dbname=p1407_matchosdb user=p1407_matchosdb password=Matchos1 host=pgsql7.mydevil.net")
     except:
         print("Unable to connect")
 
@@ -118,9 +118,9 @@ if __name__ == "__main__":
                     '3Bundesliga201516', 'Eredivisie201516', 'ChampionsLeague201516', 'LeagueOne201516']
 
     createtables(connection)
-    addteam(connection)
+    insertdata(connection_api, connection)
     mergeleagues(connection)
-    insertdata(connection_api)
+    addteamstats(connection)
 
     connection.commit()
     connection.close()
