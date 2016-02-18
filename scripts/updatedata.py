@@ -59,7 +59,7 @@ def mergeleagues(conn):
     cur2 = conn.cursor()
     cur2.execute('TRUNCATE TABLE matchos_matchfootball;')
     for x, y in enumerate(league_names):
-        print("merging")
+        #print("merging")
         cur2.execute('INSERT INTO matchos_matchfootball (hometeamname, hometeamid, awayteamname, awayteamid, goalshometeam, goalsawayteam, season_id, date) '
                 'SELECT hometeamname, hometeamid , awayteamname, awayteamid, goalshometeam, goalsawayteam, season_id, date'
                 ' from matches'+league_names[x]+';')
@@ -91,7 +91,7 @@ def insertLeagueFixtures(cur, leagues_id, league_names, connection):
             season_id = response["fixtures"][n]["soccerseasonId"]
             #cur.execute('INSERT INTO matches'+league_names[x]+' (hometeamname, hometeamid, awayteamname, awayteamid, goalshometeam, goalsawayteam, season_id, date) '
                                                              # 'VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', (htn, htid, atn, atid, ght, gat, season_id, date))
-            print("inserting")
+            #print("inserting")
             #
 
             cur.execute('INSERT INTO matches'+league_names[x]+' (hometeamname, hometeamid, awayteamname, awayteamid, goalshometeam, goalsawayteam, season_id, date) '
