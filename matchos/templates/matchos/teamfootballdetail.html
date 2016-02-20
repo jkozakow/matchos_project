@@ -4,6 +4,7 @@
     {% if matches %}
     <div class="row">
     <div class="col-md-4">
+    <h1>Team stats</h1>
     <table class="stats">
         <tr>
             <th>team name</th>
@@ -19,7 +20,7 @@
         </tr>
     </table>
     {% if players %}
-        Players:
+        <h1>Players</h1>
         <table>
             <tr>
                 <th>Name</th>
@@ -41,6 +42,7 @@
     {% endif %}
     </div>
     <div class="col-md-8">
+    <h1>All matches this season</h1>
     <table>
             <tr>
                 <th>Home Team</th>
@@ -77,5 +79,56 @@
     </div>
     {% else %}
         <p>Nope.</p>
+    {% endif %}
+    {% if last_matches %}
+        <h1 align="center">10 last matches</h1>
+    <table>
+        <tr>
+            <th>Date</th>
+            {% for match in last_matches %}
+                <th>{{ match.date|slice:":10" }}</th>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Win</th>
+            {% for match in last_matches %}
+                {% if match.hometeamname == team.name and match.goalshometeam > match.goalsawayteam %}
+                    <th>{{ match.awayteamname }} <br>{{ match.goalshometeam }} : {{ match.goalsawayteam }}</th>
+                {% elif match.awayteamname == team.name and match.goalshometeam < match.goalsawayteam %}
+                    <th>{{ match.hometeamname }} <br>{{ match.goalshometeam }} : {{ match.goalsawayteam }}</th>
+                {% else %}
+                    <th> </th>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Draw</th>
+            {% for match in last_matches %}
+                {% if match.hometeamname == team.name and match.goalshometeam == match.goalsawayteam %}
+                    <th>{{ match.awayteamname }} <br>{{ match.goalshometeam }} : {{ match.goalsawayteam }}</th>
+                {% elif match.awayteamname == team.name and match.goalshometeam == match.goalsawayteam %}
+                    <th>{{ match.hometeamname }} <br>{{ match.goalshometeam }} : {{ match.goalsawayteam }}</th>
+                {% else %}
+                    <th> </th>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Loss</th>
+            {% for match in last_matches %}
+                {% if match.hometeamname == team.name and match.goalshometeam < match.goalsawayteam %}
+                    <th>{{ match.awayteamname }} <br>{{ match.goalshometeam }} : {{ match.goalsawayteam }}</th>
+                 {% elif match.awayteamname == team.name and match.goalshometeam > match.goalsawayteam %}
+                    <th>{{ match.hometeamname }} <br>{{ match.goalshometeam }} : {{ match.goalsawayteam }}</th>
+                {% else %}
+                    <th> </th>
+                {% endif %}
+            {% endfor %}
+        </tr>
+            <th>{{ match.goalshometeam }}</th>
+            <th>{{ match.goalsawayteam }}</th>
+            <th>{{ match.awayteamname }}</th>
+
+    </table>
     {% endif %}
 {% endblock content %}

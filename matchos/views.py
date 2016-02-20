@@ -98,11 +98,13 @@ def teamdetailfootball(request, team_id):
     team_name = TeamFootball.objects.filter(teamid=team_id).values('name')
     matches = MatchFootball.objects.filter(Q(hometeamname__in=team_name) | Q(awayteamname__in=team_name))
     players = Player.objects.filter(team_id=team_id)
+    last_matches = MatchFootball.objects.filter(Q(hometeamname__in=team_name) | Q(awayteamname__in=team_name)).exclude(goalshometeam__isnull=True).order_by('-date')[:10]
     template = loader.get_template('matchos/teamfootballdetail.html')
     context = {
         'matches': matches,
         'team': team,
         'players': players,
+        'last_matches': last_matches,
     }
     return HttpResponse(template.render(context, request))
 
