@@ -18,7 +18,7 @@ def dota(request):
 
 def dotarank(request):
     team_rank = Team.objects.all().extra(
-        select={'winloss':'wins - loss'},
+        select={'winloss':'wins*3 - 2*loss + draw'},
         order_by=('-winloss',)
     )
     template = loader.get_template('matchos/dotarank.html')
